@@ -9,8 +9,9 @@
   <body>
     <div class="container">
       <header>
+        <button id="themeToggle" class="theme-toggle-btn" aria-label="Toggle Theme">☀️</button>
         <h1>Types of Data and Variables in Statistics</h1>
-        <p class="subtitle">A clear, informative guide for data analysis and statistics coursework.</p>
+        <p class="subtitle">A clear, interactive study guide for data analysis and statistics coursework.</p>
         <div class="author-badge">Prepared by: Nicolai Talosig</div>
       </header>
 
@@ -19,7 +20,7 @@
         <section class="card">
           <h2>1. Qualitative vs. Quantitative Data</h2>
           <div class="grid-2">
-            <div class="sub-card qualitative">
+            <div class="sub-card">
               <h3>Qualitative (Categorical) Data</h3>
               <p>Describes qualities, categories, or characteristics. It cannot be measured numerically.</p>
               <ul>
@@ -27,7 +28,7 @@
                 <li><strong>Analysis:</strong> Count frequencies, percentages, mode.</li>
               </ul>
             </div>
-            <div class="sub-card quantitative">
+            <div class="sub-card">
               <h3>Quantitative (Numerical) Data</h3>
               <p>Represents counts or numerical measurements. Mathematical operations can be performed.</p>
               <ul>
@@ -125,17 +126,141 @@
           </div>
         </section>
 
-        <!-- Section 4: Quick Lookup Tool -->
+        <!-- NOIR Comparison Table -->
         <section class="card">
-          <h2>Quick Variable Classifier Lookup</h2>
-          <p>Type a variable name below to see its statistical classification instantly:</p>
-          <div class="search-box">
-            <input type="text" id="variableInput" placeholder="e.g., Temperature, Car Brand, Student Grade..." />
-            <button id="classifyBtn">Classify</button>
+          <h2>NOIR Quick-Reference Comparison Matrix</h2>
+          <p class="section-intro">
+            Use this summary table to quickly test and compare the properties of each measurement level:
+          </p>
+          <div class="table-responsive">
+            <table class="comparison-table">
+              <thead>
+                <tr>
+                  <th>Scale</th>
+                  <th>Has Order?</th>
+                  <th>Equal Intervals?</th>
+                  <th>True Absolute Zero?</th>
+                  <th>Typical Example</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>Nominal</strong></td>
+                  <td>❌ No</td>
+                  <td>❌ No</td>
+                  <td>❌ No</td>
+                  <td>Eye color, Brand name</td>
+                </tr>
+                <tr>
+                  <td><strong>Ordinal</strong></td>
+                  <td>✔️ Yes</td>
+                  <td>❌ No</td>
+                  <td>❌ No</td>
+                  <td>Satisfaction rating</td>
+                </tr>
+                <tr>
+                  <td><strong>Interval</strong></td>
+                  <td>✔️ Yes</td>
+                  <td>✔️ Yes</td>
+                  <td>❌ No</td>
+                  <td>Temperature (°C)</td>
+                </tr>
+                <tr>
+                  <td><strong>Ratio</strong></td>
+                  <td>✔️ Yes</td>
+                  <td>✔️ Yes</td>
+                  <td>✔️ Yes</td>
+                  <td>Weight, Income ($)</td>
+                </tr>
+              </tbody>
+            </table>
           </div>
-          <div id="resultBox" class="result-box hidden">
-            <h4 id="resultTitle">Result</h4>
-            <p id="resultText"></p>
+        </section>
+
+        <!-- Section 4: Interactive Decision Wizard -->
+        <section class="card">
+          <h2>Interactive Variable Classification Wizard</h2>
+          <p class="section-intro">
+            Not sure what category a variable falls into? Answer the steps below to classify it correctly using
+            statistical logic:
+          </p>
+
+          <div id="wizardContainer" class="wizard-box">
+            <div id="wizardStep1">
+              <h3>Step 1: What type of data is it?</h3>
+              <div class="wizard-buttons">
+                <button class="wiz-btn" onclick="selectDataType('categorical')">
+                  Categories / Labels (Qualitative)
+                </button>
+                <button class="wiz-btn" onclick="selectDataType('numerical')">
+                  Numbers / Measurements (Quantitative)
+                </button>
+              </div>
+            </div>
+
+            <div id="wizardStep2Cat" class="hidden">
+              <h3>Step 2: Is there a natural order or ranking between the categories?</h3>
+              <div class="wizard-buttons">
+                <button
+                  class="wiz-btn"
+                  onclick="
+                    showResult(
+                      'Nominal Scale',
+                      'Qualitative Data. Categories have no mathematical order (e.g., eye color, car brands).',
+                    )
+                  "
+                >
+                  No (Nominal)
+                </button>
+                <button
+                  class="wiz-btn"
+                  onclick="
+                    showResult(
+                      'Ordinal Scale',
+                      'Qualitative Data. Categories have a meaningful rank or order (e.g., Likert survey scales, letter grades).',
+                    )
+                  "
+                >
+                  Yes (Ordinal)
+                </button>
+              </div>
+              <button class="back-btn" onclick="resetWizard()">← Start Over</button>
+            </div>
+
+            <div id="wizardStep2Num" class="hidden">
+              <h3>Step 2: Does zero mean a "total absence" or absolute zero of the variable?</h3>
+              <div class="wizard-buttons">
+                <button
+                  class="wiz-btn"
+                  onclick="
+                    showResult(
+                      'Interval Scale',
+                      'Quantitative Data. There is no true zero (e.g., 0°C does not mean an absence of temperature).',
+                    )
+                  "
+                >
+                  No, zero is arbitrary
+                </button>
+                <button
+                  class="wiz-btn"
+                  onclick="
+                    showResult(
+                      'Ratio Scale',
+                      'Quantitative Data. There is a true absolute zero where 0 means none (e.g., $0 money, 0 kg weight).',
+                    )
+                  "
+                >
+                  Yes, zero means none
+                </button>
+              </div>
+              <button class="back-btn" onclick="resetWizard()">← Start Over</button>
+            </div>
+
+            <div id="wizardResult" class="result-box hidden">
+              <h4 id="resultTitle">Classification Result</h4>
+              <p id="resultText"></p>
+              <button class="wiz-btn reset-wiz-btn" onclick="resetWizard()">Classify Another Variable</button>
+            </div>
           </div>
         </section>
       </main>

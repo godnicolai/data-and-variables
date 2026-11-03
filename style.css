@@ -6,7 +6,23 @@
   --text-main: #1e293b;
   --text-muted: #64748b;
   --border-color: #e2e8f0;
+  --subcard-bg: #f8fafc;
+  --badge-bg: #eff6ff;
+  --badge-border: #bfdbfe;
   --radius: 12px;
+}
+
+[data-theme="dark"] {
+  --primary: #3b82f6;
+  --primary-dark: #60a5fa;
+  --bg-color: #0f172a;
+  --card-bg: #1e293b;
+  --text-main: #f1f5f9;
+  --text-muted: #94a3b8;
+  --border-color: #334155;
+  --subcard-bg: #0f172a;
+  --badge-bg: #1e3a8a;
+  --badge-border: #3b82f6;
 }
 
 * {
@@ -20,6 +36,10 @@
     "Segoe UI",
     Roboto,
     sans-serif;
+  transition:
+    background-color 0.3s,
+    color 0.3s,
+    border-color 0.3s;
 }
 
 body {
@@ -32,11 +52,31 @@ body {
 .container {
   max-width: 900px;
   margin: 0 auto;
+  position: relative;
 }
 
 header {
   text-align: center;
   margin-bottom: 2.5rem;
+  position: relative;
+}
+
+.theme-toggle-btn {
+  position: absolute;
+  top: 0;
+  right: 0;
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  color: var(--text-main);
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 1.1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
 header h1 {
@@ -53,13 +93,13 @@ header h1 {
 
 .author-badge {
   display: inline-block;
-  background-color: #eff6ff;
+  background-color: var(--badge-bg);
   color: var(--primary);
   font-weight: 600;
   padding: 0.5rem 1.25rem;
   border-radius: 50px;
   font-size: 0.95rem;
-  border: 1px solid #bfdbfe;
+  border: 1px solid var(--badge-border);
 }
 
 .card {
@@ -97,7 +137,7 @@ header h1 {
 }
 
 .sub-card {
-  background-color: #f8fafc;
+  background-color: var(--subcard-bg);
   border: 1px solid var(--border-color);
   border-radius: 8px;
   padding: 1.25rem;
@@ -137,7 +177,7 @@ header h1 {
   display: flex;
   align-items: flex-start;
   gap: 1rem;
-  background: #f8fafc;
+  background: var(--subcard-bg);
   border: 1px solid var(--border-color);
   padding: 1rem;
   border-radius: 8px;
@@ -184,62 +224,124 @@ header h1 {
   color: var(--text-main);
 }
 
-/* Search Box */
-.search-box {
-  display: flex;
-  gap: 0.75rem;
-  margin-top: 1rem;
+/* Comparison Table */
+.table-responsive {
+  overflow-x: auto;
 }
 
-.search-box input {
-  flex: 1;
+.comparison-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  font-size: 0.95rem;
+}
+
+.comparison-table th,
+.comparison-table td {
   padding: 0.75rem 1rem;
   border: 1px solid var(--border-color);
+}
+
+.comparison-table th {
+  background-color: var(--subcard-bg);
+  color: var(--text-main);
+  font-weight: 600;
+}
+
+.comparison-table td {
+  color: var(--text-muted);
+}
+
+.comparison-table td strong {
+  color: var(--text-main);
+}
+
+/* Interactive Wizard Styles */
+.wizard-box {
+  background-color: var(--subcard-bg);
+  border: 1px solid var(--border-color);
   border-radius: 8px;
-  font-size: 1rem;
-  outline: none;
-  transition: border-color 0.2s;
+  padding: 1.5rem;
+  text-align: center;
 }
 
-.search-box input:focus {
-  border-color: var(--primary);
+.wizard-box h3 {
+  font-size: 1.1rem;
+  color: var(--text-main);
+  margin-bottom: 1.25rem;
 }
 
-.search-box button {
+.wizard-buttons {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.wiz-btn {
   background-color: var(--primary);
   color: white;
   border: none;
-  padding: 0.75rem 1.5rem;
+  padding: 0.75rem 1.25rem;
   border-radius: 8px;
   font-weight: 600;
   cursor: pointer;
-  transition: background-color 0.2s;
+  transition:
+    background-color 0.2s,
+    transform 0.1s;
+  font-size: 0.95rem;
 }
 
-.search-box button:hover {
+.wiz-btn:hover {
   background-color: var(--primary-dark);
+  transform: translateY(-1px);
+}
+
+.back-btn {
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  margin-top: 1rem;
+  font-size: 0.9rem;
+  text-decoration: underline;
+}
+
+.back-btn:hover {
+  color: var(--text-main);
+}
+
+.hidden {
+  display: none !important;
 }
 
 .result-box {
-  margin-top: 1rem;
-  padding: 1rem;
-  background-color: #eff6ff;
-  border: 1px solid #bfdbfe;
+  margin-top: 0;
+  padding: 1.25rem;
+  background-color: var(--badge-bg);
+  border: 1px solid var(--badge-border);
   border-radius: 8px;
-}
-
-.result-box.hidden {
-  display: none;
+  text-align: left;
 }
 
 .result-box h4 {
   color: var(--primary-dark);
-  margin-bottom: 0.25rem;
+  margin-bottom: 0.3rem;
+  font-size: 1.15rem;
 }
 
 .result-box p {
   color: var(--text-main);
-  font-size: 0.95rem;
+  font-size: 0.98rem;
+  margin-bottom: 1rem;
+}
+
+.reset-wiz-btn {
+  background-color: var(--text-main);
+  color: var(--bg-color);
+}
+.reset-wiz-btn:hover {
+  opacity: 0.9;
 }
 
 footer {
